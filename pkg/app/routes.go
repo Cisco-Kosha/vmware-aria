@@ -71,11 +71,11 @@ func (a *App) commonMiddleware(log logger.Logger) http.Handler {
 		var statusCode int
 		accessTokenMap, ok := a.TokenMap[apiKey]
 		if !ok || accessTokenMap.AccessToken == "" {
-			token = a.getToken(apiKey, a.Cfg.GetServerURL(), log)
+			token = a.getToken(apiKey, vmWareCspUrl, log)
 		} else {
 			expiryIn := accessTokenMap.ExpiresIn
 			if expiryIn.Before(time.Now()) {
-				token = a.getToken(apiKey, a.Cfg.GetServerURL(), log)
+				token = a.getToken(apiKey, vmWareCspUrl, log)
 			} else {
 				token = accessTokenMap.AccessToken
 			}
@@ -97,7 +97,7 @@ func (a *App) commonMiddleware(log logger.Logger) http.Handler {
 }
 
 func (a *App) getToken(apiKey, serverUrl string, log logger.Logger) string {
-	token, expiresIn, _ := httpclient.GenerateToken(apiKey, a.Cfg.GetServerURL(), log)
+	token, expiresIn, _ := httpclient.GenerateToken(apiKey, serverUrl, log)
 
 	expiresInStr := strconv.Itoa(expiresIn)
 
