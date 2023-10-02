@@ -1,0 +1,28 @@
+{
+  "version": "2.0.0",
+  "fields": [
+    {
+      "field": "API_TOKEN",
+      "displayName": "VMWare Cloud Portal API Token",
+      "type": "String",
+      "minLength": 4,
+      "maxLength": 80,
+      "required": true,
+      "description": "API Token",
+      "example": "admin",
+      "helpSection": "Calling APIs requires an API Token and you will need to navigate to the VMware Cloud portal and create a new API Token (requires login). Your API Token will be an alpha-numeric string."
+    },
+    {
+      "field": "SERVER_URL",
+      "displayName": "VMWare Aria API URL",
+      "type": "String",
+      "minLength": 4,
+      "maxLength": 60,
+      "required": true,
+      "description": "VMWare Aria API URL",
+      "default": "https://api.mgmt.cloud.vmware.com",
+      "example": "https://api.mgmt.cloud.vmware.com",
+      "helpSection": "VMWare Aria API URL"
+    }
+  ]
+}
