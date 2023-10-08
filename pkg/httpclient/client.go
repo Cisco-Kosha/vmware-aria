@@ -51,7 +51,7 @@ func makeAPITokenCall(apiKey string, method, serverUrl string, log logger.Logger
 }
 
 func setOauth2Header(newReq *http.Request, tokenMap map[string]string) {
-	newReq.Header.Set("Authorization", "Bearer "+tokenMap["access_token"])
+	newReq.Header.Set("Authorization", "CSPToken "+tokenMap["access_token"])
 	newReq.Header.Set("Content-Type", "application/json")
 
 	newReq.Header.Set("Accept-Encoding", "identity")

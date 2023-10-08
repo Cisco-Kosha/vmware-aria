@@ -14,15 +14,14 @@
     },
     {
       "field": "SERVER_URL",
-      "displayName": "VMWare Aria API URL",
+      "displayName": "VMWare Aria Operations API URL",
       "type": "String",
       "minLength": 4,
-      "maxLength": 60,
+      "maxLength": 90,
       "required": true,
-      "description": "VMWare Aria API URL",
-      "default": "https://api.mgmt.cloud.vmware.com",
-      "example": "https://api.mgmt.cloud.vmware.com",
-      "helpSection": "VMWare Aria API URL"
+      "description": "VMWare Aria Operations API URL",
+      "example": "https://mgmt.cloud.vmware.com",
+      "helpSection": "VMWare Aria Operations API URL"
     }
   ]
 }

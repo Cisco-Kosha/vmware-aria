@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "version": "v1",
-    "title": "VMWare Aria Logs Connector API",
-    "description": "A connector for VMware Aria Operations for Logs that provides deep operational visibility and faster troubleshooting capability.\n"
+    "title": "VMWare Aria Operations Connector API",
+    "description": "A connector for VMware Aria Operations APIs that provides a unified, AI-powered self-driving IT operations management platform for private, hybrid and multi-cloud environments.\n"
   },
   "servers": [
     {
@@ -11,129 +11,51 @@
     }
   ],
   "paths": {
-    "/vrlic/api/v1/access-control/dataset": {
-      "post": {
-        "operationId": "createdataset",
-        "summary": "Create Dataset",
-        "description": "Create Dataset",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateDataSet"
-              },
-              "example": {
-                "constraints": {
-                  "constraints": [
-                    {
-                      "constraints": [
-                        {
-                          "fieldName": "text",
-                          "operator": "CONTAINS",
-                          "value": "error"
-                        }
-                      ],
-                      "operator": "AND",
-                      "tags": [
-                        "aria-logs:search-bar"
-                      ]
-                    },
-                    {
-                      "constraints": [
-                        {
-                          "fieldName": "text",
-                          "operator": "CONTAINS",
-                          "value": "error"
-                        },
-                        {
-                          "fieldName": "text",
-                          "operator": "CONTAINS",
-                          "value": "test"
-                        }
-                      ],
-                      "operator": "AND"
-                    }
-                  ],
-                  "operator": "AND"
-                },
-                "name": "test_dataset"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateDatasetResp"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "access-control"
-        ]
-      },
+    "/vrops-cloud/suite-api/api/adapterkinds": {
       "get": {
-        "operationId": "listdatasets",
-        "summary": "List all Datasets",
-        "description": "List all Datasets",
+        "operationId": "get_adapter_kinds",
+        "summary": "Get adapter kinds and Object Types for the vCenter Adapter",
+        "description": "Get adapter kinds and Object Types for the vCenter Adapter",
         "responses": {
           "200": {
             "description": "Found",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetDataSet"
+                  "$ref": "#/components/schemas/GetAdapterType"
                 }
               }
             }
           }
         },
         "tags": [
-          "access-control"
+          "adapter type"
         ]
       }
     },
-    "/vrlic/api/v1/access-control/dataset/current": {
+    "/vrops-cloud/suite-api/api/adapterkinds/{adapterKind}/resourcekinds/{resourceKind}/statkey": {
       "get": {
-        "operationId": "get_current_dataset",
-        "summary": "Get current Dataset",
-        "description": "Get current Dataset",
-        "responses": {
-          "200": {
-            "description": "Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateDatasetResp"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "access-control"
-        ]
-      }
-    },
-    "/vrlic/api/v1/access-control/dataset/{id}": {
-      "delete": {
-        "operationId": "delete_dataset",
-        "summary": "Delete Dataset",
-        "description": "Delete Dataset",
+        "operationId": "get_all_metrics",
+        "summary": "Generate a List of All Metrics for the Object",
+        "description": "Generate a List of All Metrics for the Object",
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "name": "adapterKind",
             "schema": {
               "type": "string"
             },
             "required": true,
-            "description": "Dataset ID to be deleted"
+            "description": "Adapter Kind"
+          },
+          {
+            "in": "path",
+            "name": "resourceKind",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "resource Kind"
           }
         ],
         "responses": {
@@ -142,58 +64,82 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateDatasetResp"
+                  "$ref": "#/components/schemas/GetAllMetrics"
                 }
               }
             }
           }
         },
         "tags": [
-          "access-control"
+          "adapter type"
         ]
       }
     },
-    "/vrlic/api/v1/alert": {
-      "post": {
-        "operationId": "create_alert",
-        "summary": "Create Alert",
-        "description": "Create Alert",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAlert"
-              }
-            }
-          }
-        },
+    "/vrops-cloud/suite-api/api/solutions": {
+      "get": {
+        "operationId": "adapter_type",
+        "summary": "Adapter Types for the vSphere Solution",
+        "description": "Adapter Types for the vSphere Solution",
         "responses": {
           "201": {
             "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateAlertResp"
+                  "$ref": "#/components/schemas/AdapterType"
                 }
               }
             }
           }
         },
         "tags": [
-          "alert"
+          "adapter type"
         ]
       }
     },
-    "/vrlic/api/v1/alert/webhook-payload-parameters": {
+    "/vrops-cloud/suite-api/api/adapterkinds/{adapterKind}/resourcekinds": {
+      "get": {
+        "operationId": "get_object_type",
+        "summary": "Object Types Required for the vCenter Adapter",
+        "description": "Object Types Required for the vCenter Adapter",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "adapterKind",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Adapter Kind"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetObjectType"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "adapter type"
+        ]
+      }
+    },
+    "/vrops-cloud/suite-api/api/adapters": {
       "post": {
-        "operationId": "create_alert_notifications",
-        "summary": "Create Alert Notifications via Webhook",
-        "description": "Create Alert Notifications via Webhook",
+        "operationId": "create_adapter",
+        "summary": "Create new adapter",
+        "description": "Create new adapter",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateAlertNotification"
+                "$ref": "#/components/schemas/CreateAdapterType"
               }
             }
           }
@@ -204,27 +150,25 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/CreateAdapterTypeResp"
                 }
               }
             }
           }
         },
         "tags": [
-          "alert"
+          "adapter type"
         ]
-      }
-    },
-    "/vrlic/api/v1/alert/instances/query": {
-      "post": {
-        "operationId": "list_alerts",
-        "summary": "List alerts",
-        "description": "Gets all alert instances. You can view the alerts that have been triggered in the last hour, day, or week. You can also view details for the last 100 alerts triggered",
+      },
+      "patch": {
+        "operationId": "certificate_validation",
+        "summary": "Provide proof of certificate validation",
+        "description": "Provide proof of certificate validation",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GetAllAlertInstances"
+                "$ref": "#/components/schemas/CreateAdapterTypeResp"
               }
             }
           }
@@ -235,22 +179,22 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/CertificateValidatityResp"
                 }
               }
             }
           }
         },
         "tags": [
-          "alert"
+          "adapter type"
         ]
       }
     },
-    "/vrlic/api/v1/alert/{id}": {
-      "get": {
-        "operationId": "get_alert",
-        "summary": "Get specific alert",
-        "description": "Get alert by id",
+    "/vrops-cloud/suite-api/api/adapters/{id}/monitoringstate/start": {
+      "put": {
+        "operationId": "start_monitoring_instance",
+        "summary": "Start monitoring adapter instance",
+        "description": "Start monitoring adapter instance",
         "parameters": [
           {
             "in": "path",
@@ -259,7 +203,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "Alert ID to be fetched"
+            "description": "Adapter type ID to be monitoring"
           }
         ],
         "responses": {
@@ -275,2140 +219,481 @@
           }
         },
         "tags": [
-          "alert"
+          "adapter type"
         ]
-      },
-      "delete": {
-        "operationId": "delete_alert",
-        "summary": "Delete specific alerts",
-        "description": "Delete alert by id",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Alert ID to be deleted"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "alert"
-        ]
-      }
-    },
-    "/vrlic/api/v1/query-definitions/{id}": {
-      "get": {
-        "operationId": "get_query_definition_by_id",
-        "summary": "Get log query definition by id",
-        "description": "Get log query definition",
-        "tags": [
-          "log_query"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Query ID to be fetched"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "delete_log_query_definition",
-        "summary": "Delete Log query definition",
-        "description": "Delete log query definition",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Log Query Definition ID to be deleted"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "log_query"
-        ]
-      }
-    },
-    "/vrlic/api/v1/query-definitions": {
-      "get": {
-        "operationId": "list_query_definitions",
-        "summary": "List all log query definitions",
-        "description": "List all log query definitions",
-        "tags": [
-          "log_query"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "create_query_definitions",
-        "summary": "Create log query definitions",
-        "description": "Create log query definitions",
-        "tags": [
-          "log_query"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateLogQueryDefinition"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/vrlic/api/v1/notification/webhook-configurations": {
-      "post": {
-        "operationId": "create_webhook_configurations",
-        "summary": "Create webhook configurations",
-        "description": "Create webhook configuration",
-        "tags": [
-          "webhooks"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateWebhook"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "list_webhook_configurations",
-        "summary": "List all webhook configurations",
-        "description": "List webhook configuration",
-        "tags": [
-          "webhooks"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/vrlic/api/v1/notification/webhook-configurations/{id}": {
-      "get": {
-        "operationId": "get_webhook_configuration_by_id",
-        "summary": "Get single webhook configuration",
-        "description": "Get single webhook configuration",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Webhook Configuration ID to be fetched"
-          }
-        ],
-        "tags": [
-          "webhooks"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "delete_webhook_configuration_by_id",
-        "summary": "Delete single webhook configuration",
-        "description": "Delete single webhook configuration",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Webhook Configuration ID to be deleted"
-          }
-        ],
-        "tags": [
-          "webhooks"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
       }
     }
   },
   "components": {
     "schemas": {
-      "CreateWebhook": {
+      "CertificateValidatityResp": {
         "type": "object",
         "properties": {
-          "contentType": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "payload": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string"
-          },
-          "webhookType": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "contentType",
-          "name",
-          "payload",
-          "type",
-          "url",
-          "webhookType"
-        ]
-      },
-      "CreateLogQueryDefinition": {
-        "type": "object",
-        "properties": {
-          "aggregationFunctions": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "fieldName": {
-                  "type": "string"
-                },
-                "functionName": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "fieldName",
-                "functionName"
-              ]
-            }
-          },
-          "constraints": {
+          "resourceKey": {
             "type": "object",
             "properties": {
-              "constraints": {
+              "name": {
+                "type": "string"
+              },
+              "adapterKindKey": {
+                "type": "string"
+              },
+              "resourceKindKey": {
+                "type": "string"
+              },
+              "resourceIdentifiers": {
                 "type": "array",
                 "items": {
                   "type": "object",
                   "properties": {
-                    "constraints": {
-                      "type": "array",
-                      "items": {}
-                    },
-                    "fieldName": {
-                      "type": "string"
-                    },
-                    "operator": {
-                      "type": "string"
-                    },
-                    "tags": {
-                      "type": "array",
-                      "items": {}
+                    "identifierType": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "dataType": {
+                          "type": "string"
+                        },
+                        "isPartOfUniqueness": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "dataType",
+                        "isPartOfUniqueness"
+                      ]
                     },
                     "value": {
                       "type": "string"
                     }
                   },
                   "required": [
-                    "constraints",
-                    "fieldName",
-                    "operator",
-                    "tags",
+                    "identifierType",
                     "value"
                   ]
                 }
-              },
-              "operator": {
-                "type": "string"
-              },
-              "tags": {
-                "type": "array",
-                "items": {}
               }
             },
             "required": [
-              "constraints",
-              "fieldName",
-              "operator",
-              "tags",
-              "value"
+              "name",
+              "adapterKindKey",
+              "resourceKindKey",
+              "resourceIdentifiers"
             ]
           },
-          "name": {
+          "description": {
             "type": "string"
           },
-          "relationFunctions": {
+          "collectorId": {
+            "type": "integer"
+          },
+          "collectorGroupId": {
+            "type": "string"
+          },
+          "credentialInstanceId": {
+            "type": "string"
+          },
+          "monitoringInterval": {
+            "type": "integer"
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "resourceKey",
+          "description",
+          "collectorId",
+          "collectorGroupId",
+          "credentialInstanceId",
+          "monitoringInterval",
+          "id"
+        ]
+      },
+      "CreateAdapterTypeResp": {
+        "type": "object",
+        "properties": {
+          "resourceKey": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "adapterKindKey": {
+                "type": "string"
+              },
+              "resourceKindKey": {
+                "type": "string"
+              },
+              "resourceIdentifiers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "identifierType": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "dataType": {
+                          "type": "string"
+                        },
+                        "isPartOfUniqueness": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "dataType",
+                        "isPartOfUniqueness"
+                      ]
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "identifierType",
+                    "value"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "name",
+              "adapterKindKey",
+              "resourceKindKey",
+              "resourceIdentifiers"
+            ]
+          },
+          "description": {
+            "type": "string"
+          },
+          "collectorId": {
+            "type": "integer"
+          },
+          "collectorGroupId": {
+            "type": "string"
+          },
+          "credentialInstanceId": {
+            "type": "string"
+          },
+          "monitoringInterval": {
+            "type": "integer"
+          },
+          "adapter-certificates": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "relationName": {
+                "thumbprint": {
                   "type": "string"
                 },
-                "relationType": {
+                "certificateDetails": {
                   "type": "string"
                 }
               },
               "required": [
-                "relationName",
-                "relationType"
+                "thumbprint",
+                "certificateDetails"
               ]
             }
+          },
+          "id": {
+            "type": "string"
           }
         },
         "required": [
-          "aggregationFunctions",
-          "constraints",
-          "name",
-          "relationFunctions"
+          "resourceKey",
+          "description",
+          "collectorId",
+          "collectorGroupId",
+          "credentialInstanceId",
+          "monitoringInterval",
+          "adapter-certificates",
+          "id"
         ]
       },
-      "GetAlertById": {
+      "CreateAdapterType": {
         "type": "object",
         "properties": {
-          "alertMetadata": {
-            "type": "object",
-            "properties": {
-              "description": {
-                "type": "string"
-              },
-              "key1": {
-                "type": "string"
-              },
-              "key2": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "description",
-              "key1",
-              "key2"
-            ]
-          },
-          "alertType": {
-            "type": "string"
-          },
-          "contentPackId": {
-            "type": "string"
-          },
-          "createdAt": {
-            "type": "integer"
-          },
-          "cspOrgId": {
+          "name": {
             "type": "string"
           },
           "description": {
             "type": "string"
           },
-          "emailRecipients": {
+          "collectorId": {
+            "type": "string"
+          },
+          "adapterKindKey": {
+            "type": "string"
+          },
+          "resourceIdentifiers": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "email1": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "enabled": {
-            "type": "boolean"
-          },
-          "entityTagAssociation": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "tagId": {
+                "name": {
                   "type": "string"
                 },
-                "tagName": {
+                "value": {
                   "type": "string"
                 }
               },
               "required": [
-                "tagId",
-                "tagName"
+                "name",
+                "value"
               ]
             }
           },
-          "force": {
-            "type": "boolean"
-          },
-          "id": {
-            "type": "string"
-          },
-          "lastUpdatedAt": {
-            "type": "integer"
-          },
-          "logRcaConfig": {
+          "credential": {
             "type": "object",
             "properties": {
-              "autoRcaEnabled": {
-                "type": "boolean"
-              },
-              "createdAt": {
-                "type": "string"
-              },
-              "createdBy": {
-                "type": "string"
-              },
               "id": {
                 "type": "string"
               },
-              "lastUpdatedAt": {
+              "name": {
                 "type": "string"
               },
-              "lastUpdatedBy": {
+              "adapterKindKey": {
                 "type": "string"
               },
-              "mergeThreshold": {
-                "type": "number"
+              "credentialKindKey": {
+                "type": "string"
               },
-              "minFilterThreshold": {
-                "type": "integer"
-              },
-              "rankThreshold": {
-                "type": "integer"
-              },
-              "timeWindowMin": {
-                "type": "integer"
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "value"
+                  ]
+                }
               }
             },
             "required": [
-              "autoRcaEnabled",
-              "createdAt",
-              "createdBy",
               "id",
-              "lastUpdatedAt",
-              "lastUpdatedBy",
-              "mergeThreshold",
-              "minFilterThreshold",
-              "rankThreshold",
-              "timeWindowMin"
+              "name",
+              "adapterKindKey",
+              "credentialKindKey",
+              "fields"
             ]
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "collectorId",
+          "adapterKindKey",
+          "resourceIdentifiers",
+          "credential"
+        ]
+      },
+      "GetObjectType": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
           },
           "name": {
             "type": "string"
           },
-          "notificationConfigs": {
+          "adapterKind": {
+            "type": "string"
+          },
+          "resourceKindType": {
+            "type": "string"
+          },
+          "resourceKindSubType": {
+            "type": "string"
+          },
+          "resourceIdentifierTypes": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "config1": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "notificationMetadata": {
-            "type": "object",
-            "properties": {
-              "isIncludeAllLogs": {
-                "type": "boolean"
-              },
-              "outputFormat": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "isIncludeAllLogs",
-              "outputFormat"
-            ]
-          },
-          "operator": {
-            "type": "string"
-          },
-          "periodInMillis": {
-            "type": "integer"
-          },
-          "query": {
-            "type": "object",
-            "properties": {
-              "aggregationFunctions": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "functionName": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "functionName"
-                  ]
-                }
-              },
-              "constraints": {
-                "type": "object",
-                "properties": {
-                  "constraints": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "constraints": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "constraints": {
-                                "type": "array",
-                                "items": {}
-                              },
-                              "fieldName": {
-                                "type": "string"
-                              },
-                              "operator": {
-                                "type": "string"
-                              },
-                              "tags": {
-                                "type": "array",
-                                "items": {}
-                              },
-                              "value": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "constraints",
-                              "fieldName",
-                              "operator",
-                              "tags",
-                              "value"
-                            ]
-                          }
-                        },
-                        "operator": {
-                          "type": "string"
-                        },
-                        "tags": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "tag1": {
-                                "type": "string"
-                              }
-                            }
-                          }
-                        }
-                      },
-                      "required": [
-                        "constraints",
-                        "fieldName",
-                        "operator",
-                        "tags",
-                        "value"
-                      ]
-                    }
-                  }
-                }
-              },
-              "contentPackId": {
-                "type": "string"
-              },
-              "description": {
-                "type": "string"
-              },
-              "groupByTerms": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "fieldName": {
-                      "type": "string"
-                    },
-                    "groupByType": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "fieldName",
-                    "groupByType"
-                  ]
-                }
-              },
-              "name": {
-                "type": "string"
-              },
-              "queryId": {
-                "type": "string"
-              },
-              "relationFunctions": {
-                "type": "array",
-                "items": {}
-              },
-              "source": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "aggregationFunctions",
-              "constraints",
-              "contentPackId",
-              "description",
-              "groupByTerms",
-              "name",
-              "queryId",
-              "relationFunctions",
-              "source"
-            ]
-          },
-          "recommendations": {
-            "type": "string"
-          },
-          "severityThreshold": {
-            "type": "object",
-            "properties": {
-              "CRITICAL": {
-                "type": "integer"
-              },
-              "IMMEDIATE": {
-                "type": "integer"
-              },
-              "INFO": {
-                "type": "integer"
-              },
-              "WARNING": {
-                "type": "integer"
-              }
-            },
-            "required": [
-              "CRITICAL",
-              "IMMEDIATE",
-              "INFO",
-              "WARNING"
-            ]
-          },
-          "severityToNotificants": {
-            "type": "object",
-            "properties": {
-              "CRITICAL": {
-                "type": "object",
-                "properties": {
-                  "emailRecipients": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "email1": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "notificationConfigs": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "config1": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "sendToVrops": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "emailRecipients",
-                  "notificationConfigs",
-                  "sendToVrops"
-                ]
-              }
-            },
-            "required": [
-              "CRITICAL"
-            ]
-          },
-          "severityToSendToVrops": {
-            "type": "object",
-            "properties": {
-              "CRITICAL": {
-                "type": "boolean"
-              },
-              "IMMEDIATE": {
-                "type": "boolean"
-              },
-              "INFO": {
-                "type": "boolean"
-              },
-              "WARNING": {
-                "type": "boolean"
-              }
-            },
-            "required": [
-              "CRITICAL",
-              "IMMEDIATE",
-              "INFO",
-              "WARNING"
-            ]
-          },
-          "snoozeEndTimeInMillis": {
-            "type": "integer"
-          },
-          "snoozeStartTimeInMillis": {
-            "type": "integer"
-          },
-          "source": {
-            "type": "string"
-          },
-          "threshold": {
-            "type": "integer"
-          },
-          "waitBetweenNotificationsInSeconds": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "alertMetadata",
-          "alertType",
-          "contentPackId",
-          "createdAt",
-          "cspOrgId",
-          "description",
-          "emailRecipients",
-          "enabled",
-          "entityTagAssociation",
-          "force",
-          "id",
-          "lastUpdatedAt",
-          "logRcaConfig",
-          "name",
-          "notificationConfigs",
-          "notificationMetadata",
-          "operator",
-          "periodInMillis",
-          "query",
-          "recommendations",
-          "severityThreshold",
-          "severityToNotificants",
-          "severityToSendToVrops",
-          "snoozeEndTimeInMillis",
-          "snoozeStartTimeInMillis",
-          "source",
-          "threshold",
-          "waitBetweenNotificationsInSeconds"
-        ]
-      },
-      "GetAllAlertInstances": {
-        "type": "object",
-        "properties": {
-          "endTime": {
-            "type": "integer"
-          },
-          "namespace": {
-            "type": "string"
-          },
-          "resultLimit": {
-            "type": "integer"
-          },
-          "startTime": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "endTime",
-          "namespace",
-          "resultLimit",
-          "startTime"
-        ]
-      },
-      "CreateAlertNotification": {
-        "type": "object",
-        "properties": {
-          "payloadParameters": {
-            "type": "object",
-            "properties": {
-              "additionalInfo": {
-                "type": "object",
-                "properties": {
-                  "description": {
-                    "type": "string"
-                  },
-                  "exampleString": {
-                    "type": "string"
-                  },
-                  "isRequired": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "description",
-                  "exampleString",
-                  "isRequired"
-                ]
-              },
-              "additionalInfoJson": {
-                "type": "object",
-                "properties": {
-                  "description": {
-                    "type": "string"
-                  },
-                  "exampleString": {
-                    "type": "string"
-                  },
-                  "isRequired": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "description",
-                  "exampleString",
-                  "isRequired"
-                ]
-              },
-              "alertType": {
-                "type": "object",
-                "properties": {
-                  "description": {
-                    "type": "string"
-                  },
-                  "exampleString": {
-                    "type": "string"
-                  },
-                  "isRequired": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "description",
-                  "exampleString",
-                  "isRequired"
-                ]
-              },
-              "description": {
-                "type": "object",
-                "properties": {
-                  "description": {
-                    "type": "string"
-                  },
-                  "exampleString": {
-                    "type": "string"
-                  },
-                  "isRequired": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "description",
-                  "exampleString",
-                  "isRequired"
-                ]
-              },
-              "hitCount": {
-                "type": "object",
-                "properties": {
-                  "description": {
-                    "type": "string"
-                  },
-                  "exampleString": {
-                    "type": "string"
-                  },
-                  "isRequired": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "description",
-                  "exampleString",
-                  "isRequired"
-                ]
-              },
-              "hitOperator": {
-                "type": "object",
-                "properties": {
-                  "description": {
-                    "type": "string"
-                  },
-                  "exampleString": {
-                    "type": "string"
-                  },
-                  "isRequired": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "description",
-                  "exampleString",
-                  "isRequired"
-                ]
-              },
-              "name": {
-                "type": "object",
-                "properties": {
-                  "description": {
-                    "type": "string"
-                  },
-                  "exampleString": {
-                    "type": "string"
-                  },
-                  "isRequired": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "description",
-                  "exampleString",
-                  "isRequired"
-                ]
-              },
-              "recommendations": {
-                "type": "object",
-                "properties": {
-                  "description": {
-                    "type": "string"
-                  },
-                  "exampleString": {
-                    "type": "string"
-                  },
-                  "isRequired": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "description",
-                  "exampleString",
-                  "isRequired"
-                ]
-              },
-              "resultsUrl": {
-                "type": "object",
-                "properties": {
-                  "description": {
-                    "type": "string"
-                  },
-                  "exampleString": {
-                    "type": "string"
-                  },
-                  "isRequired": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "description",
-                  "exampleString",
-                  "isRequired"
-                ]
-              },
-              "searchPeriod": {
-                "type": "object",
-                "properties": {
-                  "description": {
-                    "type": "string"
-                  },
-                  "exampleString": {
-                    "type": "string"
-                  },
-                  "isRequired": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "description",
-                  "exampleString",
-                  "isRequired"
-                ]
-              },
-              "severity": {
-                "type": "object",
-                "properties": {
-                  "description": {
-                    "type": "string"
-                  },
-                  "exampleString": {
-                    "type": "string"
-                  },
-                  "isRequired": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "description",
-                  "exampleString",
-                  "isRequired"
-                ]
-              },
-              "sourceInfo": {
-                "type": "object",
-                "properties": {
-                  "description": {
-                    "type": "string"
-                  },
-                  "exampleString": {
-                    "type": "string"
-                  },
-                  "isRequired": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "description",
-                  "exampleString",
-                  "isRequired"
-                ]
-              },
-              "triggeredAt": {
-                "type": "object",
-                "properties": {
-                  "description": {
-                    "type": "string"
-                  },
-                  "exampleString": {
-                    "type": "string"
-                  },
-                  "isRequired": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "description",
-                  "exampleString",
-                  "isRequired"
-                ]
-              }
-            },
-            "required": [
-              "additionalInfo",
-              "additionalInfoJson",
-              "alertType",
-              "description",
-              "hitCount",
-              "hitOperator",
-              "name",
-              "recommendations",
-              "resultsUrl",
-              "searchPeriod",
-              "severity",
-              "sourceInfo",
-              "triggeredAt"
-            ]
-          },
-          "template": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "payloadParameters",
-          "template"
-        ]
-      },
-      "CreateAlertResp": {
-        "type": "object",
-        "properties": {
-          "alertMetadata": {
-            "type": "object",
-            "properties": {
-              "description": {
-                "type": "string"
-              },
-              "key1": {
-                "type": "string"
-              },
-              "key2": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "description",
-              "key1",
-              "key2"
-            ]
-          },
-          "alertType": {
-            "type": "string"
-          },
-          "contentPackId": {
-            "type": "string"
-          },
-          "createdAt": {
-            "type": "integer"
-          },
-          "cspOrgId": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "emailRecipients": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "email1": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "enabled": {
-            "type": "boolean"
-          },
-          "entityTagAssociation": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "tagId": {
+                "name": {
                   "type": "string"
                 },
-                "tagName": {
+                "dataType": {
                   "type": "string"
+                },
+                "isPartOfUniqueness": {
+                  "type": "boolean"
                 }
               },
               "required": [
-                "tagId",
-                "tagName"
+                "name",
+                "dataType",
+                "isPartOfUniqueness"
               ]
             }
-          },
-          "force": {
-            "type": "boolean"
-          },
-          "id": {
-            "type": "string"
-          },
-          "lastUpdatedAt": {
-            "type": "integer"
-          },
-          "logRcaConfig": {
+          }
+        },
+        "required": [
+          "key",
+          "name",
+          "adapterKind",
+          "resourceKindType",
+          "resourceKindSubType",
+          "resourceIdentifierTypes"
+        ]
+      },
+      "AdapterType": {
+        "type": "object",
+        "properties": {
+          "solution": {
             "type": "object",
             "properties": {
-              "autoRcaEnabled": {
-                "type": "boolean"
-              },
-              "createdAt": {
-                "type": "string"
-              },
-              "createdBy": {
-                "type": "string"
-              },
               "id": {
                 "type": "string"
               },
-              "lastUpdatedAt": {
+              "name": {
                 "type": "string"
               },
-              "lastUpdatedBy": {
+              "version": {
                 "type": "string"
               },
-              "mergeThreshold": {
-                "type": "number"
+              "description": {
+                "type": "string"
               },
-              "minFilterThreshold": {
-                "type": "integer"
+              "vendor": {
+                "type": "string"
               },
-              "rankThreshold": {
-                "type": "integer"
-              },
-              "timeWindowMin": {
-                "type": "integer"
+              "adapterKindKeys": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             },
             "required": [
-              "autoRcaEnabled",
-              "createdAt",
-              "createdBy",
               "id",
-              "lastUpdatedAt",
-              "lastUpdatedBy",
-              "mergeThreshold",
-              "minFilterThreshold",
-              "rankThreshold",
-              "timeWindowMin"
-            ]
-          },
-          "name": {
-            "type": "string"
-          },
-          "notificationConfigs": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "config1": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "notificationMetadata": {
-            "type": "object",
-            "properties": {
-              "isIncludeAllLogs": {
-                "type": "boolean"
-              },
-              "outputFormat": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "isIncludeAllLogs",
-              "outputFormat"
-            ]
-          },
-          "operator": {
-            "type": "string"
-          },
-          "periodInMillis": {
-            "type": "integer"
-          },
-          "query": {
-            "type": "object",
-            "properties": {
-              "aggregationFunctions": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "functionName": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "fieldName",
-                    "functionName"
-                  ]
-                }
-              },
-              "constraints": {
-                "type": "object",
-                "properties": {
-                  "constraints": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "constraints": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "constraints": {
-                                "type": "object",
-                                "items": {}
-                              },
-                              "operator": {
-                                "type": "string"
-                              },
-                              "tags": {
-                                "type": "object"
-                              },
-                              "value": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "constraints",
-                              "operator",
-                              "tags"
-                            ]
-                          }
-                        },
-                        "operator": {
-                          "type": "string"
-                        },
-                        "tags": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "tag1": {
-                                "type": "string"
-                              }
-                            }
-                          }
-                        }
-                      },
-                      "required": [
-                        "constraints",
-                        "fieldName",
-                        "operator",
-                        "tags",
-                        "value"
-                      ]
-                    }
-                  },
-                  "operator": {
-                    "type": "string"
-                  },
-                  "tags": {
-                    "type": "array",
-                    "items": {}
-                  }
-                },
-                "required": [
-                  "constraints",
-                  "fieldName",
-                  "operator",
-                  "tags",
-                  "value"
-                ]
-              },
-              "contentPackId": {
-                "type": "string"
-              },
-              "description": {
-                "type": "string"
-              },
-              "groupByTerms": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "fieldName": {
-                      "type": "string"
-                    },
-                    "groupByType": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "fieldName",
-                    "groupByType"
-                  ]
-                }
-              },
-              "name": {
-                "type": "string"
-              },
-              "queryId": {
-                "type": "string"
-              },
-              "relationFunctions": {
-                "type": "array",
-                "items": {}
-              },
-              "source": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "aggregationFunctions",
-              "constraints",
-              "contentPackId",
-              "description",
-              "groupByTerms",
               "name",
-              "queryId",
-              "relationFunctions",
-              "source"
-            ]
-          },
-          "recommendations": {
-            "type": "string"
-          },
-          "severityThreshold": {
-            "type": "object",
-            "properties": {
-              "CRITICAL": {
-                "type": "integer"
-              },
-              "IMMEDIATE": {
-                "type": "integer"
-              },
-              "INFO": {
-                "type": "integer"
-              },
-              "WARNING": {
-                "type": "integer"
-              }
-            },
-            "required": [
-              "CRITICAL",
-              "IMMEDIATE",
-              "INFO",
-              "WARNING"
-            ]
-          },
-          "severityToNotificants": {
-            "type": "object",
-            "properties": {
-              "CRITICAL": {
-                "type": "object",
-                "properties": {
-                  "emailRecipients": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "email1": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "notificationConfigs": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "config1": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "sendToVrops": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "emailRecipients",
-                  "notificationConfigs",
-                  "sendToVrops"
-                ]
-              }
-            },
-            "required": [
-              "CRITICAL"
-            ]
-          },
-          "severityToSendToVrops": {
-            "type": "object",
-            "properties": {
-              "CRITICAL": {
-                "type": "boolean"
-              },
-              "IMMEDIATE": {
-                "type": "boolean"
-              },
-              "INFO": {
-                "type": "boolean"
-              },
-              "WARNING": {
-                "type": "boolean"
-              }
-            },
-            "required": [
-              "CRITICAL",
-              "IMMEDIATE",
-              "INFO",
-              "WARNING"
-            ]
-          },
-          "snoozeEndTimeInMillis": {
-            "type": "integer"
-          },
-          "snoozeStartTimeInMillis": {
-            "type": "integer"
-          },
-          "source": {
-            "type": "string"
-          },
-          "threshold": {
-            "type": "integer"
-          },
-          "waitBetweenNotificationsInSeconds": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "alertMetadata",
-          "alertType",
-          "contentPackId",
-          "createdAt",
-          "cspOrgId",
-          "description",
-          "emailRecipients",
-          "enabled",
-          "entityTagAssociation",
-          "force",
-          "id",
-          "lastUpdatedAt",
-          "logRcaConfig",
-          "name",
-          "notificationConfigs",
-          "notificationMetadata",
-          "operator",
-          "periodInMillis",
-          "query",
-          "recommendations",
-          "severityThreshold",
-          "severityToNotificants",
-          "severityToSendToVrops",
-          "snoozeEndTimeInMillis",
-          "snoozeStartTimeInMillis",
-          "source",
-          "threshold",
-          "waitBetweenNotificationsInSeconds"
-        ]
-      },
-      "CreateAlert": {
-        "type": "object",
-        "properties": {
-          "alertType": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "operator": {
-            "type": "string"
-          },
-          "periodInMillis": {
-            "type": "integer"
-          },
-          "query": {
-            "type": "object",
-            "properties": {
-              "aggregationFunctions": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "functionName": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "fieldName",
-                    "functionName"
-                  ]
-                }
-              },
-              "constraints": {
-                "type": "object",
-                "properties": {
-                  "constraints": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "constraints": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "constraints": {
-                                "type": "array",
-                                "items": {}
-                              },
-                              "fieldName": {
-                                "type": "string"
-                              },
-                              "operator": {
-                                "type": "string"
-                              },
-                              "tags": {
-                                "type": "array",
-                                "items": {}
-                              },
-                              "value": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "constraints",
-                              "fieldName",
-                              "operator",
-                              "tags",
-                              "value"
-                            ]
-                          }
-                        },
-                        "operator": {
-                          "type": "string"
-                        },
-                        "tags": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "tag1": {
-                                "type": "string"
-                              }
-                            }
-                          }
-                        }
-                      },
-                      "required": [
-                        "constraints",
-                        "fieldName",
-                        "operator",
-                        "tags",
-                        "value"
-                      ]
-                    }
-                  },
-                  "operator": {
-                    "type": "string"
-                  },
-                  "tags": {
-                    "type": "array",
-                    "items": {}
-                  }
-                },
-                "required": [
-                  "constraints",
-                  "fieldName",
-                  "operator",
-                  "tags",
-                  "value"
-                ]
-              },
-              "contentPackId": {
-                "type": "string"
-              },
-              "description": {
-                "type": "string"
-              },
-              "groupByTerms": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "fieldName": {
-                      "type": "string"
-                    },
-                    "groupByType": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "fieldName",
-                    "groupByType"
-                  ]
-                }
-              },
-              "name": {
-                "type": "string"
-              },
-              "queryId": {
-                "type": "string"
-              },
-              "relationFunctions": {
-                "type": "array",
-                "items": {}
-              },
-              "source": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "aggregationFunctions",
-              "constraints",
-              "contentPackId",
+              "version",
               "description",
-              "groupByTerms",
-              "name",
-              "queryId",
-              "relationFunctions",
-              "source"
-            ]
-          },
-          "severityThreshold": {
-            "type": "object",
-            "properties": {
-              "CRITICAL": {
-                "type": "integer"
-              },
-              "IMMEDIATE": {
-                "type": "integer"
-              },
-              "INFO": {
-                "type": "integer"
-              },
-              "WARNING": {
-                "type": "integer"
-              }
-            },
-            "required": [
-              "CRITICAL",
-              "IMMEDIATE",
-              "INFO",
-              "WARNING"
+              "vendor",
+              "adapterKindKeys"
             ]
           }
         },
         "required": [
-          "alertType",
-          "name",
-          "operator",
-          "periodInMillis",
-          "query",
-          "severityThreshold"
+          "solution"
         ]
       },
-      "GetDataSet": {
+      "GetAllMetrics": {
         "type": "object",
         "properties": {
-          "content": {
+          "resourceTypeAttributes": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "constraints": {
-                  "type": "object",
-                  "properties": {
-                    "constraints": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "constraints": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "fieldName": {
-                                  "type": "string"
-                                },
-                                "operator": {
-                                  "type": "string"
-                                },
-                                "value": {
-                                  "type": "string"
-                                }
-                              },
-                              "required": [
-                                "fieldName",
-                                "operator",
-                                "value"
-                              ]
-                            }
-                          },
-                          "operator": {
-                            "type": "string"
-                          },
-                          "tags": {
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "tag1": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "required": [
-                          "constraints",
-                          "operator",
-                          "tags"
-                        ]
-                      }
-                    },
-                    "operator": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "constraints",
-                    "operator"
-                  ]
-                },
-                "cspOrgId": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "id": {
+                "key": {
                   "type": "string"
                 },
                 "name": {
                   "type": "string"
                 },
-                "restrictAutocomplete": {
+                "description": {
+                  "type": "string"
+                },
+                "defaultMonitored": {
                   "type": "boolean"
                 },
-                "restricts": {
+                "rollupType": {
+                  "type": "string"
+                },
+                "instanceType": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "dataType2": {
+                  "type": "string"
+                },
+                "monitoring": {
+                  "type": "boolean"
+                },
+                "property": {
                   "type": "boolean"
                 }
               },
               "required": [
-                "constraints",
-                "cspOrgId",
-                "description",
-                "id",
+                "key",
                 "name",
-                "restrictAutocomplete",
-                "restricts"
+                "description",
+                "defaultMonitored",
+                "rollupType",
+                "instanceType",
+                "unit",
+                "dataType2",
+                "monitoring",
+                "property"
               ]
             }
-          },
-          "empty": {
-            "type": "boolean"
-          },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
-          },
-          "number": {
-            "type": "integer"
-          },
-          "numberOfElements": {
-            "type": "integer"
-          },
-          "pageable": {
-            "type": "object",
-            "properties": {
-              "offset": {
-                "type": "integer"
-              },
-              "pageNumber": {
-                "type": "integer"
-              },
-              "pageSize": {
-                "type": "integer"
-              },
-              "paged": {
-                "type": "boolean"
-              },
-              "sort": {
-                "type": "object",
-                "properties": {
-                  "empty": {
-                    "type": "boolean"
-                  },
-                  "sorted": {
-                    "type": "boolean"
-                  },
-                  "unsorted": {
-                    "type": "boolean"
-                  }
-                },
-                "required": [
-                  "empty",
-                  "sorted",
-                  "unsorted"
-                ]
-              },
-              "unpaged": {
-                "type": "boolean"
-              }
-            },
-            "required": [
-              "offset",
-              "pageNumber",
-              "pageSize",
-              "paged",
-              "sort",
-              "unpaged"
-            ]
-          },
-          "size": {
-            "type": "integer"
-          },
-          "sort": {
-            "type": "object",
-            "properties": {
-              "empty": {
-                "type": "boolean"
-              },
-              "sorted": {
-                "type": "boolean"
-              },
-              "unsorted": {
-                "type": "boolean"
-              }
-            },
-            "required": [
-              "empty",
-              "sorted",
-              "unsorted"
-            ]
-          },
-          "totalElements": {
-            "type": "integer"
-          },
-          "totalPages": {
-            "type": "integer"
           }
         },
         "required": [
-          "content",
-          "empty",
-          "first",
-          "last",
-          "number",
-          "numberOfElements",
-          "pageable",
-          "size",
-          "sort",
-          "totalElements",
-          "totalPages"
+          "resourceTypeAttributes"
         ]
       },
-      "CreateDataSet": {
+      "GetAdapterType": {
         "type": "object",
         "properties": {
-          "constraints": {
-            "type": "object",
-            "properties": {
-              "constraints": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "constraints": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "fieldName": {
-                            "type": "string"
-                          },
-                          "operator": {
-                            "type": "string"
-                          },
-                          "value": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "fieldName",
-                          "operator",
-                          "value"
-                        ]
-                      }
-                    },
-                    "operator": {
-                      "type": "string"
-                    },
-                    "tags": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "tag1": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "required": [
-                    "constraints",
-                    "operator",
-                    "tags"
-                  ]
-                }
-              },
-              "operator": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "constraints",
-              "operator"
-            ]
+          "key": {
+            "type": "string"
           },
           "name": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "constraints",
-          "name"
-        ]
-      },
-      "CreateDatasetResp": {
-        "type": "object",
-        "properties": {
-          "constraints": {
-            "type": "object",
-            "properties": {
-              "constraints": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "constraints": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "fieldName": {
-                            "type": "string"
-                          },
-                          "operator": {
-                            "type": "string"
-                          },
-                          "value": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "fieldName",
-                          "operator",
-                          "value"
-                        ]
-                      }
-                    },
-                    "operator": {
-                      "type": "string"
-                    },
-                    "tags": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "tag1": {
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "operator": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "constraints",
-              "operator"
-            ]
-          },
-          "cspOrgId": {
             "type": "string"
           },
           "description": {
             "type": "string"
           },
-          "id": {
+          "adapterKindType": {
             "type": "string"
           },
-          "name": {
-            "type": "string"
+          "describeVersion": {
+            "type": "integer"
           },
-          "restrictAutocomplete": {
-            "type": "boolean"
+          "identifiers": {
+            "type": "array",
+            "items": {}
           },
-          "restricts": {
-            "type": "boolean"
+          "resourceKinds": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "kind1": {
+                  "type": "string"
+                }
+              }
+            }
           }
         },
         "required": [
-          "constraints",
-          "cspOrgId",
-          "description",
-          "id",
+          "key",
           "name",
-          "restrictAutocomplete",
-          "restricts"
+          "description",
+          "adapterKindType",
+          "describeVersion",
+          "identifiers",
+          "resourceKinds"
         ]
       }
     }
