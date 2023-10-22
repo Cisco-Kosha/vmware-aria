@@ -20,7 +20,8 @@
       "maxLength": 90,
       "required": true,
       "description": "VMWare Aria Operations API URL",
-      "example": "https://mgmt.cloud.vmware.com",
+      "example": "https://mgmt.cloud.vmware.com/vrops-cloud/suite-api/",
+      "default": "https://www.mgmt.cloud.vmware.com/vrops-cloud/suite-api/",
       "helpSection": "VMWare Aria Operations API URL"
     }
   ]
